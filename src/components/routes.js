@@ -16,6 +16,7 @@ const privateRoutes = [
         icon: <Icon fontSize="small">home</Icon>,
         route: "/home",
         component: <Home />,
+        private: true
     },
     {
         type: "collapse",
@@ -24,6 +25,7 @@ const privateRoutes = [
         icon: <Icon fontSize="small">table_view</Icon>,
         route: "/products",
         component: <Products />,
+        private: true
     },
     {
         type: "collapse",
@@ -32,6 +34,7 @@ const privateRoutes = [
         icon: <Icon fontSize="small">table_view</Icon>,
         route: "/categories",
         component: <Categories />,
+        private: true
     },
     {
         type: "collapse",
@@ -40,6 +43,7 @@ const privateRoutes = [
         icon: <Icon fontSize="small">users</Icon>,
         route: "/users",
         component: <Users />,
+        private: true
     },
     // {
     //     type: "collapse",
@@ -56,6 +60,7 @@ const privateRoutes = [
         icon: <Icon fontSize="small">users</Icon>,
         route: "/users/:id",
         component: <UserDetail />,
+        private: true
     },
 ];
 
@@ -67,6 +72,7 @@ const publicRoutes = [
         icon: <Icon fontSize="small">register</Icon>,
         route: "/register",
         component: <Register />,
+        private: false
     },
     {
         type: "default",
@@ -75,6 +81,7 @@ const publicRoutes = [
         icon: <Icon fontSize="small">register</Icon>,
         route: "/login",
         component: <Login />,
+        private: false
     },
 ];
 

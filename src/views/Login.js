@@ -19,10 +19,8 @@ export default function Login() {
         console.log(response);
         if (response.status === 200) {
             if (processToken(response.data.accessToken)) {
-                setTimeout(() => {
-                    setOpen(true);
-                    navigate("/");
-                }, 50);
+                setOpen(true);
+                navigate("/home");
             }
         }
     }

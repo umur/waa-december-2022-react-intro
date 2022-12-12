@@ -18,9 +18,9 @@ export default function Products() {
         setProductsState(response.data);
     }
 
-    React.useEffect(() => {
-        fetchProducts();
-    }, []);
+    // React.useEffect(() => {
+    //     fetchProducts();
+    // }, []);
     let initialState = data.products;
     const [productsState, setProductsState] = React.useState(initialState);
 
