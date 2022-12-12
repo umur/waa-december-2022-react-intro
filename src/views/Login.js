@@ -15,7 +15,7 @@ export default function Login() {
     const navigate = useNavigate();
 
     async function login() {
-        const response = await axios.post('http://localhost:8080/uaa', inputs);
+        const response = await axios.post('/uaa', inputs);
         console.log(response);
         if (response.status === 200) {
             if (processToken(response.data.accessToken)) {

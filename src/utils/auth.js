@@ -1,8 +1,11 @@
 const isLoggedIn = () => {
-    console.log("token",localStorage.getItem("token"));
     if (localStorage.getItem("token") == null)
         return false;
     return true;
+}
+
+const getToken = () => {
+    return isLoggedIn() ? localStorage.getItem("token") : null;
 }
 
 const processToken = (token) => {
@@ -14,4 +17,4 @@ const logout = () => {
     localStorage.clear();
 }
 
-module.exports = { isLoggedIn, processToken, logout };
+module.exports = { isLoggedIn, processToken, logout, getToken };

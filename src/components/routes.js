@@ -7,6 +7,7 @@ import Users from "../views/Users";
 import Register from "../views/Register";
 // import { isLoggedIn } from "../utils/auth";
 import Login from "../views/Login";
+import ProductForm from "../views/ProductForm";
 
 const privateRoutes = [
     {
@@ -60,6 +61,24 @@ const privateRoutes = [
         icon: <Icon fontSize="small">users</Icon>,
         route: "/users/:id",
         component: <UserDetail />,
+        private: true
+    },
+    {
+        type: "hidden",
+        name: "AddProduct",
+        key: "addProduct",
+        icon: <Icon fontSize="small">add</Icon>,
+        route: "/products/add",
+        component: <ProductForm />,
+        private: true
+    },
+    {
+        type: "hidden",
+        name: "EditProduct",
+        key: "editProduct",
+        icon: <Icon fontSize="small">edit</Icon>,
+        route: "/products/edit/:id",
+        component: <ProductForm />,
         private: true
     },
 ];

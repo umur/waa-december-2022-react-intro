@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Box from '@mui/material/Box';
 import routes from './routes'
 import { isLoggedIn } from '../utils/auth';
+import { httpInterceptor } from '../utils/httpInterceptor';
 
 
 const getRoutes = (allRoutes) =>
@@ -34,7 +35,6 @@ const getRoutes = (allRoutes) =>
           </NoAuth>
         }
       />
-      // return <Route exact path={route.route} element={route.component} key={route.key} />;
     }
 
     return null;
@@ -42,7 +42,6 @@ const getRoutes = (allRoutes) =>
 
 function RequireAuth({ children }) {
   let loggedIn = isLoggedIn();
-  // const location = useLocation();
 
   return loggedIn === true ? (
     children
@@ -53,7 +52,6 @@ function RequireAuth({ children }) {
 
 function NoAuth({ children }) {
   let loggedIn = isLoggedIn();
-  // const location = useLocation();
 
   return loggedIn !== true ? (
     children
@@ -63,7 +61,8 @@ function NoAuth({ children }) {
 }
 
 export default function ViewPort() {
-  console.log("view port start");
+  httpInterceptor();
+
   let loggedIn = isLoggedIn();
   let defaultRoute = loggedIn ? '/home' : '/login';
   let myRoutes = [...routes.privateRoutes, ...routes.publicRoutes];// loggedIn ? routes.privateRoutes : routes.publicRoutes;
