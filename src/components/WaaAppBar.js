@@ -51,8 +51,12 @@ function WaaAppBar(props) {
   const onLogout = () => {
     logout();
     handleClose();
-    // handleChange();
     navigate('/');
+  };
+
+  const onProfile = () => {
+    handleClose();
+    navigate('/profile');
   };
 
   const handleDrawerToggle = () => {
@@ -89,7 +93,7 @@ function WaaAppBar(props) {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-          <MenuItem onClick={handleClose}>Profile</MenuItem>
+          <MenuItem onClick={onProfile}>Profile</MenuItem>
           <MenuItem onClick={onLogout}>Logout</MenuItem>
         </Menu>
       </div>

@@ -1,16 +1,19 @@
 import React from "react";
 import { getUser } from "../utils/auth";
 
-export default function Home() {
+export default function Profile() {
     let user = getUser();
 
     return (
         <>
             <h1>
-                Hi {user.firstname}!
+                Profile
             </h1>
             <h2>
-                Welcome to WAA React App
+                First name: {user.firstname}
+            </h2>
+            <h2>
+                Second name: {user.lastname}
             </h2>
         </>
     );

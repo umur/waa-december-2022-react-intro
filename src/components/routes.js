@@ -8,6 +8,9 @@ import Register from "../views/Register";
 // import { isLoggedIn } from "../utils/auth";
 import Login from "../views/Login";
 import ProductForm from "../views/ProductForm";
+import Product from "../views/Product";
+import CategoryForm from "../views/CategoryForm";
+import Profile from "../views/Profile";
 
 const privateRoutes = [
     {
@@ -17,6 +20,15 @@ const privateRoutes = [
         icon: <Icon fontSize="small">home</Icon>,
         route: "/home",
         component: <Home />,
+        private: true
+    },
+    {
+        type: "hidden",
+        name: "Profile",
+        key: "profile",
+        icon: <Icon fontSize="small">profile</Icon>,
+        route: "/profile",
+        component: <Profile />,
         private: true
     },
     {
@@ -74,11 +86,38 @@ const privateRoutes = [
     },
     {
         type: "hidden",
+        name: "Product",
+        key: "product",
+        icon: <Icon fontSize="small">edit</Icon>,
+        route: "/products/:id",
+        component: <Product />,
+        private: true
+    },
+    {
+        type: "hidden",
         name: "EditProduct",
         key: "editProduct",
         icon: <Icon fontSize="small">edit</Icon>,
-        route: "/products/edit/:id",
+        route: "/products/:id/edit",
         component: <ProductForm />,
+        private: true
+    },
+    {
+        type: "hidden",
+        name: "AddCategory",
+        key: "addCategory",
+        icon: <Icon fontSize="small">edit</Icon>,
+        route: "/categories/add",
+        component: <CategoryForm />,
+        private: true
+    },
+    {
+        type: "hidden",
+        name: "EditCategory",
+        key: "editCategory",
+        icon: <Icon fontSize="small">edit</Icon>,
+        route: "/categories/:id/edit",
+        component: <CategoryForm />,
         private: true
     },
 ];

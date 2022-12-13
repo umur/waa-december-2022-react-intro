@@ -1,27 +1,41 @@
 import { Box } from '@mui/material';
-import { useState, forwardRef } from 'react';
+import { useState, forwardRef, useEffect } from 'react';
 import axios from 'axios';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-import { useNavigate } from 'react-router-dom';
-import { processToken } from '../utils/auth';
+import { useNavigate, useParams } from 'react-router-dom';
 // import ReactDOM from 'react-dom/client';
 
 const Alert = forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-export default function Login() {
+export default function CategoryForm() {
     const navigate = useNavigate();
+    let mode = 'add';
 
-    async function login() {
-        const response = await axios.post('/uaa', inputs);
-        console.log(response);
+    const { id } = useParams("id");
+    if (id) {
+        mode = 'edit';
+    }
+
+    async function fetchCategory() {
+        const response = await axios.get(`/categories/${id}`);
+        setInputs(response.data);
+    }
+
+    useEffect(() => {
+        if (id)
+            fetchCategory();
+    }, [id]);
+
+    async function save() {
+        const response = mode === 'add' ? await axios.post('/categories', inputs) : await axios.put(`/categories/${id}`, inputs);
         if (response.status === 200) {
-            if (processToken(response.data.accessToken)) {
-                setOpen(true);
-                navigate("/home");
-            }
+            setOpen(true);
+            setTimeout(() => {
+                navigate("/categories");
+            }, 2000);
         }
     }
 
@@ -35,7 +49,7 @@ export default function Login() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        login();
+        save();
     }
 
     /******Snackbar code*****/
@@ -55,39 +69,26 @@ export default function Login() {
                     <table>
                         <tbody>
                             <tr>
-                                <td><label>Email: </label></td>
+                                <td><label>Category name: </label></td>
                                 <td>
                                     <input
                                         required
-                                        type="email"
-                                        name="email"
-                                        value={inputs.email || ""}
-                                        onChange={handleChange}
-                                    />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><label>Password: </label></td>
-                                <td>
-                                    <input
-                                        required
-                                        minLength={3}
-                                        type="password"
-                                        name="password"
-                                        value={inputs.password || ""}
+                                        type="text"
+                                        name="name"
+                                        value={inputs.name || ""}
                                         onChange={handleChange}
                                     />
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <input type="submit" value="Login" />
+                    <input type="submit" value="Save" />
                 </form>
             </Box>
 
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-                    User logged in
+                    Category saved. Should be redirected to Category detail now
                 </Alert>
             </Snackbar>
         </>

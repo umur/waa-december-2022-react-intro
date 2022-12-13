@@ -28,7 +28,6 @@ export default function Register() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        alert(JSON.stringify(inputs));
         register();
     }
 
@@ -52,6 +51,8 @@ export default function Register() {
                                 <td><label>Firstname: </label></td>
                                 <td>
                                     <input
+                                        required
+                                        title='Firstname is required'
                                         type="text"
                                         name="firstname"
                                         value={inputs.firstname || ""}
@@ -63,6 +64,8 @@ export default function Register() {
                                 <td><label>Lastname: </label></td>
                                 <td>
                                     <input
+                                        required
+                                        title='Lastname is required'
                                         type="text"
                                         name="lastname"
                                         value={inputs.lastname || ""}
@@ -74,6 +77,8 @@ export default function Register() {
                                 <td><label>Email: </label></td>
                                 <td>
                                     <input
+                                        required
+                                        title='Email is required'
                                         type="email"
                                         name="email"
                                         value={inputs.email || ""}
@@ -85,6 +90,9 @@ export default function Register() {
                                 <td><label>Password: </label></td>
                                 <td>
                                     <input
+                                        required
+                                        title='Password is required'
+                                        minLength="3"
                                         type="password"
                                         name="password"
                                         value={inputs.password || ""}
