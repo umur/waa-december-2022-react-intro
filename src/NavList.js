@@ -3,7 +3,6 @@ import User from './User';
 import Product from './Product';
 import Role from './Role';
 import UserDetails from './UserDetails';
-import Reducers from'./Components/Reducers';
 import Reviews from './Review';
 
 
@@ -29,10 +28,6 @@ const NavList = () => {
         
       </li>
       <li class="nav-item">
-        <Link to="/reducers" class="nav-link" >Reducers</Link>
-        
-      </li>
-      <li class="nav-item">
         <Link to="/reviews" class="nav-link" >Reviews</Link>
         
       </li>
@@ -45,7 +40,7 @@ const NavList = () => {
               <Route path='/products' element={<Product/>}/>
               <Route path='/roles' element={<Role/>}/>
               <Route path='/userdetails/:id' element={<UserDetails/>}></Route>
-              <Route path='/reducers' element={<Reducers/>}/>
+
               <Route path='/reviews' element={<Reviews/>}/>
             </Routes>
         </div >

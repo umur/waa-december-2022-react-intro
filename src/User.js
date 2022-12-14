@@ -3,13 +3,18 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { saveUsers } from "./Redux/UserReducer";
 const User = () => {
+    const usersName=useSelector((state)=>
+    state.userReducer1.users);
 
-    let initialName = [];
+    const dispatchUser=useDispatch();
 
-    const [usersName, setMyName] = useState(initialName);
+    // let initialName = [];
 
-    //const [navigate, setNavigate] = useState(initialName);
+    // const [usersName, setMyName] = useState(initialName);
+
     const navigate= useNavigate();
    
     const userDetailsHandler = (id) => {
@@ -20,8 +25,9 @@ const User = () => {
 
 const fetchUser = async() => {
     const usersData=await axios.get("http://localhost:8081/users")
-    console.log(usersData.data);
-    setMyName(usersData.data)
+    // console.log(usersData.data);
+    // setMyName(usersData.data)
+    dispatchUser(saveUsers(usersData.data));
 }
 
 useEffect(()=>{
