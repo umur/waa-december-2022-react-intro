@@ -20,13 +20,7 @@ function Product() {
     const navigate = useNavigate();
 
     const fetchProduct = async function () {
-        const token = localStorage.getItem('token');
-
-        const products = await axios.get('/products/' + params.idProduct, {
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
-        });
+        const products = await axios.get('/products/' + params.idProduct);
         setProductState(products.data);
     }
 
@@ -35,13 +29,7 @@ function Product() {
     }, []);
 
     const onDelete = async function(){
-        const token = localStorage.getItem('token');
-
-        await axios.delete('/products/' + params.idProduct, {
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
-        });
+        await axios.delete('/products/' + params.idProduct);
         navigate(-1);
     }
 

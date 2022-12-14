@@ -4,37 +4,40 @@ import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import ProductForm from './components/Product-Form';
 import edit from '../../images/edit.png';
-import './products.css';
+import  './products.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { setFormVisible } from '../../redux/productReducer';
+import { handleError } from '../../utilities';
 
 function Products() {
 
-    const [displayForm, setDisplayForm] = useState(false);
+    const isFormVisible = useSelector((state) => state.productReducer.isFormVisible);
+    const dispatch = useDispatch();
+
     const [currentProduct, setCurrentProduct] = useState(0);
     const [productsState, setProductsState] = useState([]);
 
-    const fetchProducts = async function () {
-        //set token in header
-        const token = localStorage.getItem('token');
-        const products = await axios.get('/products', {
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
-        });
-        setProductsState(products.data);
+    const fetchProducts =  function () {
+        axios.get('/products')
+            .then(products => {
+                setProductsState(products.data);
+            })
+            .catch(error => handleError(error, dispatch));
     }
 
     useEffect(() => {
         fetchProducts();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const addClick = () => {
-        setDisplayForm(true);
+        dispatch({ type:"product/setFormVisible", payload:true });
+        // dispatch(setFormVisible(true));
     }
 
     const editClick = (id) => {
-        setDisplayForm(true);
-        setCurrentProduct(id)
-        console.log(id);
+        dispatch(setFormVisible(true));
+        setCurrentProduct(id);
     }
 
     return (
@@ -42,7 +45,7 @@ function Products() {
             <label className='h2'>Products</label>
             <Button variant='success' onClick={addClick}>Add</Button>
 
-            {displayForm ? <ProductForm id={currentProduct}/> : (
+            {isFormVisible ? <ProductForm id={currentProduct}/> : (
                 <ul>
                     {productsState.map((product, index) => {
                         return (

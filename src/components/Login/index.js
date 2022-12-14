@@ -4,26 +4,30 @@ import './login.css';
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import logo from '../../images/icons-user-30.png';
+import logo from '../../images/user.png';
 import jwt from 'jwt-decode'
+import { useDispatch, useSelector } from 'react-redux';
+import { setLogIn } from '../../redux/userReducer';
 
 function Login() {
     const initialState = {
-        isLoggedIn: false,
         userName: '',
         password: ''
     };
 
     const [loginState, setLoginState] = useState(initialState);
 
+    let isLoggedIn = useSelector((state) => state.userReducer.isLoggedIn);
+    const dispatch = useDispatch();
+
     useEffect(() => {
-        console.log(localStorage.getItem('token'));
         const token = localStorage.getItem('token');
         if(token){
             var info = jwt(token);
-            setLoginState({...loginState, isLoggedIn: true, userName: info.sub});
-        }
-            
+            setLoginState({...loginState, userName: info.sub});
+            dispatch(setLogIn(true));
+        }  
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onSubmit = async function(event){
@@ -35,7 +39,7 @@ function Login() {
 
         if(response.status < 300) {
             localStorage.setItem('token', response.data.accessToken);
-            setLoginState({...loginState, isLoggedIn: true});
+            dispatch(setLogIn(true));
         }
     }
 
@@ -47,10 +51,11 @@ function Login() {
     }
     const logout = function() {
         localStorage.removeItem('token');
+        dispatch(setLogIn(false));
         setLoginState(initialState);
     }
 
-    const { isLoggedIn, userName, password } = loginState;
+    const { userName, password } = loginState;
     
     return (
         <div className='login'>

@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Alert, Button, Form } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
+import { setFormVisible } from '../../../../redux/productReducer';
 import './product-form.css';
 
 function ProductForm(props) {
@@ -13,29 +15,18 @@ function ProductForm(props) {
         price: '',
         rating: ''
     };
-console.log('props', props);
+
+    const dispatch = useDispatch();
+
     const [productFormState, setProductFormState] = useState(initialState);
     const [categories, setCategories] = useState([]);
 
     const fetchCategories = async function () {
-        //set token in header
-        const token = localStorage.getItem('token');
-        const categories = await axios.get('/categories', {
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
-        });
+        const categories = await axios.get('/categories');
         setCategories(categories.data);
     }
     const fetchProduct = async function () {
-        //set token in header
-        const token = localStorage.getItem('token');
-        const product = await axios.get('/products/'+props.id, {
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
-        });
-        
+        const product = await axios.get('/products/'+props.id);
         setProductFormState({...product.data, category: product.data.category.id});
     }
 
@@ -53,7 +44,6 @@ console.log('props', props);
     const saveProduct = async function (event) {
         event.preventDefault();
 
-        const token = localStorage.getItem('token');
         const data = {
             id: props.id || 4010,
             name: productFormState.name,
@@ -66,15 +56,21 @@ console.log('props', props);
 
         //if update
         if(props.id) {
-            await axios.put('/products/' + props.id, data, {
-                headers: {
-                    'Authorization': 'Bearer ' + token
-                }});
+            const response = await axios.put('/products/' + props.id, data);
+
+            if(response.status < 300){
+                dispatch(setFormVisible(false));
+            } else {
+                
+            }
         } else {
-            await axios.post('/products', data, {
-                headers: {
-                    'Authorization': 'Bearer ' + token
-                }});
+            const response = await axios.post('/products', data);
+
+            if(response.status < 300){
+                dispatch(setFormVisible(false));
+            } else {
+
+            }
         }
     }
 
