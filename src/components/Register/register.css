@@ -1,0 +1,17 @@
+.register {
+    clear: both;
+}
+
+.register label {
+    min-width: 150px;
+    margin-bottom: 8px;
+}
+
+.register form {
+    margin: 10px;
+}
+
+.register form button{
+    min-width: 100px;
+    margin: 10px 5px 0 0px;
+}
