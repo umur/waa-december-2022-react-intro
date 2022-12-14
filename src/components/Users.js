@@ -1,29 +1,35 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router";
+import { useSelector, useDispatch } from "react-redux";
+// import { saveusers } from "./redux/userReducer";
+import { saveusers } from "../redux/userReducer";
 
 export function Users() {
+
+  const userState = useSelector((state) => state.userReducer.user);
+
+  const dispatch = useDispatch();
 
   const fetchUser = async () => {
 
     const users = await axios.get("http://localhost:8080/users");
-    //console.log(users.data[0].firstname);
-    setName(users.data);
+    console.log(users.data);
+    // setName(users.data);s
+    dispatch(saveusers(users.data));
   };
 
   useEffect(() => {
     fetchUser();
   }, []);
 
-  let intialState = [];
-
-  const [userState, setName] = useState(intialState);
+  //let intialState = [];
+  //const [userState, setName] = useState(intialState);
 
   const navigate = useNavigate();
 
   const userDetailHandler = (id) => {
-    navigate("/userdetails/" +id)
-    
+    navigate("/userdetails/" + id);
   };
 
   return (
@@ -51,10 +57,14 @@ export function Users() {
                 <td>{user.lastname}</td>
                 <td></td>
                 <td>
-                  <button type="button" className="btn btn-success" onClick={()=>userDetailHandler(user.id)}>
+                  <button
+                    type="button"
+                    className="btn btn-success"
+                    onClick={() => userDetailHandler(user.id)}
+                  >
                     User Details
                   </button>
-                   <button type="button" className="btn btn-success">
+                  <button type="button" className="btn btn-success">
                     Edit
                   </button>
                 </td>

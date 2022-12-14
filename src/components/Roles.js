@@ -16,31 +16,32 @@ export default function Roles() {
   let initialState = [];
 
   const [rolesState, setName] = useState(initialState);
-
+   
   return (
     <div>
-      <table class="table">
-        <thead class="thead-dark">
+      <table className="table">
+        <thead className="thead-dark">
           <tr>
             <th scope="col">ID</th>
             <th scope="col">Role</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>{}</td>
+  { rolesState.map(user=>{
+    return(
+
+         <tr>
+            <th scope="row">{user.id}</th>
+            <td>{user.role}</td>
            
           </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>{}</td>
-        
-          </tr>
+    
+    );
+
+  })}     
+  
         </tbody>
       </table>
-
-      <h1> This is Roles Page</h1>
     </div>
   );
 }

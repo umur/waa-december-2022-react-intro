@@ -6,22 +6,13 @@ function Userdetails() {
 
      // console.log(id)
 
-      const intialState={
-           id:1,
-           firstname:"",
-           lastname:"",
-           email:"",
 
-      };
-
-      const [userState, setName] = useState(intialState)
-      const {id} = useParams();
-
+      
       //console.log(userState)
 
       const fetchUserById = async () => {
         const users = await axios.get("http://localhost:8080/users/"+id);
-        console.log(users.data)
+       // console.log(users.data)
 
         setName(users.data);
       };
@@ -30,10 +21,20 @@ function Userdetails() {
         fetchUserById();
       }, []);
 
+      const intialState={
+        id:1,
+        firstname:"",
+        lastname:"",
+        email:"",
+   };
+
+      const [userState, setName] = useState(intialState)
+      const {id} = useParams();
+
     return (
         <div>
            <table className="table table-dark">
-
+            
         <thead>
           <tr>
             <th scope="col">ID</th>
@@ -52,7 +53,6 @@ function Userdetails() {
                 <td></td>
 
               </tr>
-          
         </tbody>
       </table>
         </div>

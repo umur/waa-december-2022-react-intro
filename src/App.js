@@ -37,7 +37,9 @@ function App() {
             Category
           </Link>
         </li>
+        
       </ul>
+     
 
       <Routes>
         <Route path="/users" element={<Users />}> </Route>
