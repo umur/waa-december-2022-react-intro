@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { loginUser, registerUser } from "../features/user/userSlice";
 import customFetch from "../utils/axios";
 import { adduserToLocalStorage } from "../utils/localStorage";
 const initialState = {
@@ -8,7 +10,18 @@ const initialState = {
 };
 
 function Login({ setUsers }) {
+  const dispatch = useDispatch();
+  const { isLoading, user } = useSelector((state) => state.user);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
+    }
+  });
   const [values, setValues] = useState(initialState);
   const handleChange = (e) => {
     const name = e.target.name;
@@ -20,15 +33,18 @@ function Login({ setUsers }) {
   const onSubmit = async (e) => {
     e.preventDefault();
     console.log(values);
-    try {
-      const response = await customFetch.post("/auth/login", values);
-      console.log(response.data);
-      setUsers(response.data.user);
-      adduserToLocalStorage(response.data.user);
-      navigate("/dashboard");
-    } catch (error) {
-      console.log(error.response);
-    }
+    //Check if the userinput data is empyt valid or not
+    // try {
+    //   const response = await customFetch.post("/auth/login", values);
+    //   console.log(response.data);
+    //   setUsers(response.data.user);
+    //   adduserToLocalStorage(response.data.user);
+    //   navigate("/dashboard");
+    // } catch (error) {
+    //   console.log(error.response);
+    // }
+    dispatch(loginUser(values));
+
     setValues(initialState);
   };
   return (
@@ -66,7 +82,7 @@ function Login({ setUsers }) {
         </div>
 
         <button type="submit" className="btn btn-block">
-          Login
+          {isLoading ? "Loading..." : "Login"}
         </button>
         <div>
           Don't have an account?

@@ -1,6 +1,8 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import Wrapper from "../assets/wrappers/RegisterPage";
+import { loginUser, registerUser } from "../features/user/userSlice";
 import customFetch from "../utils/axios";
 const url = "https://jobify-prod.herokuapp.com/api/v1/toolkit";
 
@@ -11,7 +13,19 @@ const initialState = {
 };
 
 function Register() {
+  const dispatch = useDispatch();
+  const { isLoading, user } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+
   const [values, setValues] = useState(initialState);
+  useEffect(() => {
+    if (user) {
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
+    }
+  });
+
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -27,12 +41,15 @@ function Register() {
       return;
     }
     console.log(".....->");
-    try {
-      const response = await customFetch.post("/auth/register", values);
-      console.log(response.data);
-    } catch (error) {
-      console.log(error.response);
-    }
+    // try {
+    //   const response = await customFetch.post("/auth/register", values);
+    //   console.log(response.data);
+    // } catch (error) {
+    //   console.log(error.response);
+    // }
+
+    dispatch(registerUser(values));
+
     setValues(initialState);
   };
 
@@ -87,8 +104,8 @@ function Register() {
           />
         </div>
 
-        <button type="submit" className="btn btn-block">
-          Submit
+        <button type="submit" className="btn btn-block" disabled={isLoading}>
+          {isLoading ? "Loading..." : "Submit"}
         </button>
         <div>
           <Link className="signup-link" to="/">
