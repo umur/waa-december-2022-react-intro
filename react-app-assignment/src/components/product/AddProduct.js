@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function AddProduct() {
   const navigate = useNavigate();
@@ -28,10 +28,7 @@ function AddProduct() {
     console.log(product);
     product.category = JSON.parse(product.category);
     try {
-      const response = await axios.post(
-        "/products",
-        product,
-      );
+      const response = await axios.post("/products", product);
       navigate("/products");
     } catch (error) {
       console.log(error);
@@ -97,9 +94,7 @@ function AddProduct() {
             onChange={onValueChanged}
             required
           >
-            <option value="none">
-              Select Category
-            </option>
+            <option value="none">Select Category</option>
             {categoryList.map((item) => {
               console.log(item);
               return (
@@ -110,7 +105,7 @@ function AddProduct() {
             })}
           </select>
         </div>
-        <input type="submit" className="btn btn-primary" value="Add" />
+        <input type="submit" className="btn btn-primary m-1" value="Add" />
       </form>
     </div>
   );

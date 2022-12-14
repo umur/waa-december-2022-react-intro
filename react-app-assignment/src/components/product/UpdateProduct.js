@@ -37,8 +37,8 @@ function UpdateProduct(props) {
     product.category = JSON.parse(product.category);
     try {
       const response = await axios.put(
-        "/products",
-        product,
+        "/products/" + params.productId,
+        product
       );
       navigate("/products");
     } catch (error) {
@@ -55,7 +55,7 @@ function UpdateProduct(props) {
   return (
     <div>
       <form className="w-50 mx-auto" onSubmit={onFormSubmit}>
-        <h3>Add New Product</h3>
+        <h3>Update Product</h3>
         <div className="form-group">
           <label htmlFor="name">Name</label>
           <input
@@ -105,9 +105,7 @@ function UpdateProduct(props) {
             onChange={onValueChanged}
             required
           >
-            <option value="none">
-              Select Category
-            </option>
+            <option value="none">Select Category</option>
             {categoryList.map((item) => {
               console.log(item);
               return (
@@ -118,7 +116,7 @@ function UpdateProduct(props) {
             })}
           </select>
         </div>
-        <input type="submit" className="btn btn-primary" value="Update" />
+        <input type="submit" className="btn btn-primary m-1" value="Update" />
       </form>
     </div>
   );

@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import ReviewList from "./ReviewList";
+import ReviewList from "../review/ReviewList";
 
 function ProductDetails(props) {
   const params = useParams();
@@ -22,21 +22,13 @@ function ProductDetails(props) {
       {/* <img class="card-img-top" src="..." alt="Card image cap"> */}
       <div class="card-body">
         <h5 class="card-title">{productState.name}</h5>
-        <p class="card-text">
+        <div class="card-text">
           Price: <div>{productState.price}</div>
           <div>Rating: {productState.rating}</div>
           <div>Category: {productState.category?.name}</div>
-        </p>
+        </div>
         <div>Reviews: {<ReviewList reviews={productState.reviews} />}</div>
       </div>
-
-      {/* <div className="item-container">
-      <div>Name: {productState.name}</div>
-      <div>Price: {productState.price}</div>
-      <div>Rating: {productState.rating}</div>
-      <div>Category: {productState.category?.name}</div>
-      <div>Reviews: {<ReviewList reviews={productState.reviews} />}</div>
-    </div> */}
     </div>
   );
 }
