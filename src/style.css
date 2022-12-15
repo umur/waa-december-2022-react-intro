@@ -1,0 +1,79 @@
+.body {
+    background: palegreen;
+    min-height: 85vh;
+}
+
+/* header */
+.header-container {
+    padding: 10px 0;
+    background: lightgray;
+}
+.icon{
+    margin-left: 20px;
+}
+
+.menus {
+    text-align: left;
+}
+.menus ul li {
+    display: inline;
+    margin: 0 10px;
+}
+
+.menus ul li a{
+    text-decoration: none;
+    color: cadetblue;
+}
+.icon a {
+    text-decoration: none;
+}
+.log-out {
+    text-decoration: none;
+}
+.log-out:hover {
+    cursor: pointer;
+}
+/* Footer */
+.footer-container {
+
+}
+
+/* Login */
+.login-container {
+
+}
+
+.login-wrapper {
+    text-align: left;
+    margin: 0 auto;
+}
+.form-element {
+    margin: 10px 0;
+    text-align: left;
+}
+.submit {
+    text-align: left;
+}
+
+/* Register */
+.register-wrapper {
+    text-align: left;
+    margin: 0 auto;
+}
+.alert {
+    margin: 0 auto;
+}
+
+/* Products */
+.products-container {
+    margin: 0 auto;
+}
+
+.add-product {
+    text-align: left;
+    margin: 10px 0;
+}
+/* Form elements */
+/* .mb-3 {
+    text-align: left;
+} */
