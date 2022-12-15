@@ -84,7 +84,7 @@ const Role = () => {
                                     <td>
                                         <button type="button" className="btn btn-primary">Role Details</button>
                                         <button type="button" className="btn btn-secondary" >Edit</button>
-                                        <DeleteButton id={r.id}></DeleteButton>
+                                        <DeleteButton id={r.id} endPoint='roles/'></DeleteButton>
                                         {/* <button type="button" className="btn btn-danger" onClick={() => deleteRoleHandeler(r.id)} >Delete</button> */}
                                     </td>
                                 </tr>

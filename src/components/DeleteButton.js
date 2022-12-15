@@ -5,30 +5,22 @@ import { setStatusCode } from "../redux/deleteRoleSlicer";
 
 export const DeleteButton = (props) => {
 
-    //const initialDeleteStatusCode = true;
 
-    const statusCode = useSelector((state) => state.deleteRoleReducer.initialDeleteStatusCode)
+
+    const deleteStatusCode = useSelector((state) => state.deleteRoleReducer.initialDeleteStatusCode)
 
     const dispatch = useDispatch();
 
-    //const [statusCode, setStatusCode] = useState(initialDeleteStatusCode)
+    const deleteRoleHandeler = async (id, endPoint) => {
+        id = parseInt(id)
+        const result = await axios.delete('http://localhost:8081/' + endPoint + id)
 
-    const deleteRoleHandeler = async (roleId) => {
-        const role = parseInt(roleId)
-        console.log(`================${roleId}`)
-        const result = await axios.delete('http://localhost:8081/roles/' + role)
         if (result.status === 200) {
-            dispatch(setStatusCode(!statusCode));
+            dispatch(setStatusCode(!deleteStatusCode));
         }
-
-        // console.log(result.status);
     }
 
     return (
-        <div>
-            {console.log(props)}
-            <button type="button" className="btn btn-danger" onClick={() => deleteRoleHandeler(props.id)} >Delete</button>
-        </div>
-
+        <button type="button" className="btn btn-danger" onClick={() => deleteRoleHandeler(props.id, props.endPoint)} >Delete</button>
     )
 }
