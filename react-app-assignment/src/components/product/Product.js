@@ -10,7 +10,7 @@ export default function Product(props) {
       <ProductList />
       <Outlet />
       <Link className="btn btn-primary" to="add">
-        Add Products
+        Add Product
       </Link>
     </div>
   );

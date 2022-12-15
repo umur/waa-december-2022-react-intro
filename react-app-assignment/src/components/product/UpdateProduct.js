@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function UpdateProduct(props) {
   const navigate = useNavigate();
 
   const params = useParams();
 
+  const header = {
+    headers: {
+      Authorization: token,
+    },
+  };
+
   const [categoryList, setCategoryList] = useState([]);
+  const token = useSelector((state) => state.authReducer.token);
 
   const [product, setProduct] = useState({
     name: "",
@@ -17,12 +25,12 @@ function UpdateProduct(props) {
   });
 
   const getProduct = async () => {
-    let result = await axios.get("/products/" + params.productId);
+    let result = await axios.get("/products/" + params.productId, header);
     setProduct(result.data);
   };
 
   const getCategoryList = async () => {
-    let response = await axios.get("/categories");
+    let response = await axios.get("/categories", header);
     setCategoryList(response.data);
   };
 
@@ -38,7 +46,8 @@ function UpdateProduct(props) {
     try {
       const response = await axios.put(
         "/products/" + params.productId,
-        product
+        product,
+        header
       );
       navigate("/products");
     } catch (error) {

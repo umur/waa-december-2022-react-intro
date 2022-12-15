@@ -2,14 +2,20 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ReviewList from "../review/ReviewList";
+import { useSelector } from "react-redux";
 
 function ProductDetails(props) {
   const params = useParams();
 
   const [productState, setProductState] = useState({});
+  const token = useSelector((state) => state.authReducer.token);
 
   const getProduct = async () => {
-    let result = await axios.get("/products/" + params.productId);
+    let result = await axios.get("/products/" + params.productId, {
+      headers: {
+        Authorization: token,
+      },
+    });
     setProductState(result.data);
   };
 

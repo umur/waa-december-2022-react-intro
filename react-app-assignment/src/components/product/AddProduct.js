@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function AddProduct() {
   const navigate = useNavigate();
 
   const [categoryList, setCategoryList] = useState([]);
+  const token = useSelector((state) => state.authReducer.token);
+
+  const header = {
+    headers: {
+      Authorization: token,
+    },
+  };
 
   const [product, setProduct] = useState({
     name: "",
@@ -15,7 +23,7 @@ function AddProduct() {
   });
 
   const getCategoryList = async () => {
-    let response = await axios.get("/categories");
+    let response = await axios.get("/categories", header);
     setCategoryList(response.data);
   };
 
@@ -28,7 +36,7 @@ function AddProduct() {
     console.log(product);
     product.category = JSON.parse(product.category);
     try {
-      const response = await axios.post("/products", product);
+      const response = await axios.post("/products", product, header);
       navigate("/products");
     } catch (error) {
       console.log(error);

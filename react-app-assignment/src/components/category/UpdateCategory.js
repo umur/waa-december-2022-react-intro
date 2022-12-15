@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function UpdateCategory(props) {
   const navigate = useNavigate();
@@ -12,8 +13,16 @@ function UpdateCategory(props) {
     price: "",
   });
 
+  const token = useSelector((state) => state.authReducer.token);
+
+  const header = {
+    headers: {
+      Authorization: token,
+    },
+  };
+
   const getCategory = async () => {
-    let result = await axios.get("/categories/" + params.categoryId);
+    let result = await axios.get("/categories/" + params.categoryId, header);
     setCategory(result.data);
   };
 
@@ -26,7 +35,8 @@ function UpdateCategory(props) {
     try {
       const response = await axios.put(
         "/categories/" + params.categoryId,
-        category
+        category,
+        header
       );
       navigate("/categories");
     } catch (error) {

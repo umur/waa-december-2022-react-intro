@@ -10,7 +10,7 @@ export default function Category(props) {
       <h2>Categories</h2>
       <CategoryList />
       <Outlet />
-      <Link className="btn btn-primary" to="add">Add Products</Link>
+      <Link className="btn btn-primary" to="add">Add Category</Link>
     </div>
   );
 }

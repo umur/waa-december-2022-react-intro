@@ -1,14 +1,20 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function ProductList(props) {
   const navigate = useNavigate();
 
   const [products, setProducts] = useState([]);
+  const token = useSelector((state) => state.authReducer.token);
 
   async function getProducts() {
-    let products = await axios.get("/products");
+    let products = await axios.get("/products", {
+      headers: {
+        Authorization: token,
+      },
+    });
     console.log(products);
     setProducts(products.data);
   }

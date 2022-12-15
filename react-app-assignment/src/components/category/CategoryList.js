@@ -1,14 +1,23 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function CategoryList(props) {
   const navigate = useNavigate();
 
   const [categories, setCategories] = useState([]);
 
+  const token = useSelector((state) => state.authReducer.token);
+
+  const header = {
+    headers: {
+      Authorization: token,
+    },
+  };
+
   async function getCategories() {
-    let categories = await axios.get("/categories");
+    let categories = await axios.get("/categories", header);
     setCategories(categories.data);
   }
 

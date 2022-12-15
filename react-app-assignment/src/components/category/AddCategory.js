@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function AddCategory() {
   const navigate = useNavigate();
@@ -10,10 +11,18 @@ function AddCategory() {
     price: "",
   });
 
+  const token = useSelector((state) => state.authReducer.token);
+
+  const header = {
+    headers: {
+      Authorization: token,
+    },
+  };
+
   const onFormSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post("/categories", category);
+      const response = await axios.post("/categories", category, header);
       navigate("/categories");
     } catch (error) {
       console.log(error);
