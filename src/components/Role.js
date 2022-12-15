@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 const Role = () => {
 
     let initialState = [];
-
+    //=======================form data=======================
     let formstate = {
         name: ""
     }
-
+    //===================form state=============================
     const [formData, setFormData] = useState(formstate)
 
     const getFormDataHandaler = (event) => {

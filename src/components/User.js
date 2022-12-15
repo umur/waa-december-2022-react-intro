@@ -1,28 +1,42 @@
 import axios from "axios";
-import { useState } from "react";
-import { useEffect } from "react";
+//import { useState } from "react";
+import { useContext, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import { lgContext } from "../App";
+import { setName } from "../redux/userReducer";
+import LoginForm from "./LoginForm";
 
 
 const User = () => {
+    //==================use context for language ==============
+    const context = useContext(lgContext)
+
+    //=====================navigator ==============
 
     const navigate = useNavigate()
 
+    //====================== dispatch for reducer==============
+
+    const dispatch = useDispatch();
+
     const fetchUsers = async () => {
         const users = await axios.get('http://localhost:8081/users');
-        console.log(users.data[0].firstName);
-        setName(users.data)
-
-
+        // console.log(users.data[0].firstName);
+        //setName(users.data)
+        dispatch(setName(users.data));
     }
 
     useEffect(() => {
         fetchUsers();
+        context.changeColor("green");
     }, [])
 
-    let initialName = ["mark"];
+    //let initialName = ["mark"];
 
-    const [nameState, setName] = useState(initialName);
+    const nameState = useSelector((state) => state.userReducer.user);
+
+    //const [nameState, setName] = useState(initialName);
 
 
     const userDetailHandeler = (id) => {
@@ -30,11 +44,12 @@ const User = () => {
 
 
     }
-    console.log(nameState);
+    //console.log(nameState);
 
     return (
 
         <div>
+            <h1>{context.color}</h1>
             <table className="table">
                 <thead className="thead-dark">
                     <tr>
