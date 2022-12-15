@@ -4,18 +4,14 @@ import com.waa.security.entity.Product;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.lang.JoinPoint;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedReader;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.HashMap;
 
 

@@ -1,16 +1,15 @@
 package com.waa.security.service.impl;
 
 import com.waa.security.entity.Product;
+import com.waa.security.security.CustomUserDetails;
 import com.waa.security.repository.ProductRepo;
 import com.waa.security.repository.UserRepo;
-import com.waa.security.security.CustomUserDetails;
 import com.waa.security.service.ProductService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,18 +22,12 @@ public class productServiceImpl implements ProductService {
 
 
     public void save(Product p) {
-//        var userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        var user = userDetails.getUser();
-//
-//        List<Product> products = userRepo.findByEmail(user.getEmail()).getProducts();
-//        if (products == null) {
-//            products = new ArrayList<>();
-//        }
-//        products.add(p);
-//
-//
-//        userRepo.save(user);
-//        productRepo.save(p);
+        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var user = userRepo.findByEmail(userDetails.getUser().getEmail());
+        p.setUser(user);
+        user.getProducts().add(p);
+        userRepo.save(user);
+        save(p.getId(), p);
     }
 
     public void save(long id, Product product) {
@@ -51,7 +44,8 @@ public class productServiceImpl implements ProductService {
     }
 
     public Product findById(long id) {
-        return productRepo.findById(id).get();
+        return productRepo.findById(id).orElse(null);
+
     }
 
     public List<Product> findAll() {

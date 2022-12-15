@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class OffensiveWordChecker {
 final String[] offensiveWords = {
-            "test", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"
+            "test", "one", "two", "three", "four", "five"
     };
 
     public String checkOffensiveWords(String censoredBody) throws IOException {

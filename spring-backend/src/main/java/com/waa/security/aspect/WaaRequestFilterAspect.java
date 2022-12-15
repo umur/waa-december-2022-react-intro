@@ -26,7 +26,7 @@ public class WaaRequestFilterAspect {
 
     @Around("allMethods()")
     public Object checkRequest(ProceedingJoinPoint joinPoint) throws Throwable {
-        System.out.println("checking request User");
+
         if (request.getUserPrincipal() != null) {
             var user = request.getUserPrincipal().getName();
             if (waaOffensiveWordsAspect.getUserOffensiveCountMap().get(user) != null) {
@@ -37,7 +37,12 @@ public class WaaRequestFilterAspect {
                 }
             }
         }
-        return joinPoint.proceed();
+        try {
+            System.out.println("Check completed: " + joinPoint.getSignature().getName());
+            return joinPoint.proceed();
+        } catch (Exception e) {
+            return e.getMessage();
+        }
 
 
     }

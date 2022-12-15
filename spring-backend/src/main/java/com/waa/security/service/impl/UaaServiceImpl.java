@@ -12,7 +12,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import javax.naming.AuthenticationException;
+import java.util.List;
 
 
 @Service
@@ -22,6 +25,8 @@ public class UaaServiceImpl implements UaaService {
 
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private final JwtHelper jwtHelper;
 
@@ -33,7 +38,7 @@ public class UaaServiceImpl implements UaaService {
                             loginRequest.getPassword())
             );
         } catch (BadCredentialsException e) {
-            System.out.println("Bad Credentials");
+            throw new RuntimeException("Bad Credentials");
         }
 
         final String accessToken = jwtHelper.generateToken(loginRequest.getEmail());
@@ -43,7 +48,7 @@ public class UaaServiceImpl implements UaaService {
 
 
     @Override
-    public LoginResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
+    public LoginResponse refreshToken(RefreshTokenRequest refreshTokenRequest) throws AuthenticationException {
         boolean isRefreshTokenValid = jwtHelper.validateToken(refreshTokenRequest.getRefreshToken());
         if (isRefreshTokenValid) {
             final String accessToken = jwtHelper.generateToken(jwtHelper.getSubject(refreshTokenRequest.getRefreshToken()));
@@ -54,6 +59,16 @@ public class UaaServiceImpl implements UaaService {
 
     @Override
     public void signUp(User user) {
+        if (userRepo.findByEmail(user.getEmail()) != null) {
+            throw new RuntimeException("User already exists");
+        }
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepo.save(user);
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+
+        return userRepo.findAll();
     }
 }

@@ -1,7 +1,5 @@
 package com.waa.security.aspect;
 
-import com.waa.security.entity.User;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.Duration;
