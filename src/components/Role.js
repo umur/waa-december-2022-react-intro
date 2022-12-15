@@ -1,16 +1,22 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import { DeleteButton } from "./DeleteButton";
 
 const Role = () => {
 
     let initialState = [];
-    //=======================form data=======================
+
+    //===================Hooks=============================
     let formstate = {
         name: ""
     }
-    //===================form state=============================
     const [formData, setFormData] = useState(formstate)
+    const navigate = useNavigate();
+
+    // const initialDeleteStatusCode = true;
+    // const [statusCode, setStatusCode] = useState(initialDeleteStatusCode)
 
     //====================event  handelers ==================
 
@@ -19,26 +25,40 @@ const Role = () => {
         console.log(formData);
     }
 
-    const navigate = useNavigate();
     const addRoleHAndeler = () => {
         navigate("/addRole/");
     }
 
+    // const deleteRoleHandeler = async (roleId) => {
+    //     const role = parseInt(roleId)
+    //     console.log(`================${roleId}`)
+    //     const result = await axios.delete('http://localhost:8081/roles/' + role)
+    //     if (result.status === 200) {
+    //         setStatusCode(!statusCode);
+    //     }
+
+    //     console.log(result.status);
+    // }
     //===================================== fetch data ====================================
 
     const fetchRoles = async () => {
         const roles = await axios.get('http://localhost:8081/roles');
         //console.log(roles.data);
         setRoleState(roles.data);
+        navigate("/roles/")
     }
 
+    const statusCode = useSelector(state => state.deleteRoleReducer.initialDeleteStatusCode)
+    console.log("=============" + statusCode);
     //=========================== useState to put the data in local context =================
     const [roleState, setRoleState] = useState(initialState);
 
     //========================== useEffct  run the get data fucntion=========================
     useEffect(() => {
         fetchRoles();
-    }, [])
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [statusCode])
 
 
 
@@ -61,7 +81,12 @@ const Role = () => {
                                 <tr key={index}>
                                     <td >{r.id}</td>
                                     <td>{r.role}</td>
-                                    <td><button type="button" className="btn btn-secondary">Role Details</button> <button type="button" className="btn btn-secondary" >Edit</button></td>
+                                    <td>
+                                        <button type="button" className="btn btn-primary">Role Details</button>
+                                        <button type="button" className="btn btn-secondary" >Edit</button>
+                                        <DeleteButton id={r.id}></DeleteButton>
+                                        {/* <button type="button" className="btn btn-danger" onClick={() => deleteRoleHandeler(r.id)} >Delete</button> */}
+                                    </td>
                                 </tr>
                             )
                         }
