@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
 const Role = () => {
 
@@ -11,9 +12,16 @@ const Role = () => {
     //===================form state=============================
     const [formData, setFormData] = useState(formstate)
 
+    //====================event  handelers ==================
+
     const getFormDataHandaler = (event) => {
         setFormData({ ...formData, name: event.target.value });
         console.log(formData);
+    }
+
+    const navigate = useNavigate();
+    const addRoleHAndeler = () => {
+        navigate("/addRole/");
     }
 
     //===================================== fetch data ====================================
@@ -32,6 +40,8 @@ const Role = () => {
         fetchRoles();
     }, [])
 
+
+
     console.log(roleState);
 
     return (
@@ -41,7 +51,7 @@ const Role = () => {
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Role name</th>
-                        <th scope="col"><button type="button" className="btn btn-primary">Add Roles</button></th>
+                        <th scope="col"><button type="button" className="btn btn-primary" onClick={addRoleHAndeler}>Add Roles</button></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -65,7 +75,7 @@ const Role = () => {
                 <label >Name</label>
                 <input type="text"
                     className="form-control" name="" id="" aria-describedby="helpId" placeholder="" value={formData.name} onChange={getFormDataHandaler} />
-                <small id="helpId" class="form-text text-muted">Help text</small>
+                <small id="helpId" className="form-text text-muted">Help text</small>
             </div>
 
         </div>

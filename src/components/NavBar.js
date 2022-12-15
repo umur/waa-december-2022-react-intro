@@ -13,6 +13,7 @@ const NavBar = () => {
                             <NavList navName="Review" routeTo="/reviews" ></NavList>
                             <NavList navName="Product" routeTo="/products"></NavList>
                             <NavList navName="addJobs" routeTo="/addjobs"></NavList>
+                            <NavList navName="addRole" routeTo="/addRole"></NavList>
                         </ul>
                     </div>
                 </div>

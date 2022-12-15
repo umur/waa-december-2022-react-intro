@@ -9,6 +9,7 @@ import Product from './components/Product';
 import { UserDetails } from "./components/UserDetails";
 import AddJobs from './components/AddJob';
 import React, { useState } from 'react';
+import AddRole from './components/AddRole';
 
 //=================== create context =================
 export const lgContext = React.createContext()
@@ -40,6 +41,7 @@ function App() {
           <Route path="/reviews" element={<Review></Review>}></Route>
           <Route path="/products" element={<Product></Product>}></Route>
           <Route path="/addjobs" element={<AddJobs></AddJobs>}></Route>
+          <Route path="/addrole" element={<AddRole></AddRole>}></Route>
         </Routes>
       </lgContext.Provider>
 
