@@ -1,11 +1,11 @@
-import axios from "axios";
+
 //import { useState } from "react";
 import { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { lgContext } from "../App";
-import { setName } from "../redux/userReducer";
-import LoginForm from "./LoginForm";
+import { fetchUsers } from "../redux/userReducer";
+
 
 
 const User = () => {
@@ -20,16 +20,22 @@ const User = () => {
 
     const dispatch = useDispatch();
 
-    const fetchUsers = async () => {
-        const users = await axios.get('http://localhost:8081/users');
-        // console.log(users.data[0].firstName);
-        //setName(users.data)
-        dispatch(setName(users.data));
+
+    // const fetchUsers = async () => {
+    //     const users = await axios.get('http://localhost:8081/users');
+    //     // console.log(users.data[0].firstName);
+    //     //setName(users.data)
+    //     dispatch(setName(users.data));
+    // }
+
+    const fetchUserFromReducer = () => {
+        dispatch(fetchUsers());
     }
 
     useEffect(() => {
-        fetchUsers();
+        fetchUserFromReducer();
         context.changeColor("green");
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     //let initialName = ["mark"];

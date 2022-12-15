@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const deleteRoleSlicer = createSlice({
+const deleteByIdSlicer = createSlice({
     name: "deletRoleReducer",
     initialState: { initialDeleteStatusCode: true },
     reducers: {
@@ -10,6 +10,6 @@ const deleteRoleSlicer = createSlice({
     }
 })
 
-const deleteRoleReducer = deleteRoleSlicer.reducer;
-export default deleteRoleReducer;
-export const { setStatusCode } = deleteRoleSlicer.actions;
+const deleteByIdReducer = deleteByIdSlicer.reducer;
+export default deleteByIdReducer;
+export const { setStatusCode } = deleteByIdSlicer.actions;

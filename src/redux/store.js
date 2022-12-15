@@ -1,12 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import deleteRoleReducer from "./deleteRoleSlicer";
+import deleteByIdReducer from "./deleteByIdSlicer";
 import userReducer from "./userReducer";
 
 
 const store = configureStore({
     reducer: {
         userReducer: userReducer,
-        deleteRoleReducer: deleteRoleReducer
+        deleteByIdReducer: deleteByIdReducer
     }
 })
 

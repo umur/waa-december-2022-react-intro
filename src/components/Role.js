@@ -48,7 +48,7 @@ const Role = () => {
         navigate("/roles/")
     }
 
-    const statusCode = useSelector(state => state.deleteRoleReducer.initialDeleteStatusCode)
+    const statusCode = useSelector(state => state.deleteByIdReducer.initialDeleteStatusCode)
     console.log("=============" + statusCode);
     //=========================== useState to put the data in local context =================
     const [roleState, setRoleState] = useState(initialState);

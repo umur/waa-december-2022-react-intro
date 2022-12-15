@@ -1,15 +1,15 @@
 //import { useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { setStatusCode } from "../redux/deleteRoleSlicer";
+import { setStatusCode } from "../redux/deleteByIdSlicer";
 
 export const DeleteButton = (props) => {
 
 
-
-    const deleteStatusCode = useSelector((state) => state.deleteRoleReducer.initialDeleteStatusCode)
+    const deleteStatusCode = useSelector((state) => state.deleteByIdReducer.initialDeleteStatusCode)
 
     const dispatch = useDispatch();
+
 
     const deleteRoleHandeler = async (id, endPoint) => {
         id = parseInt(id)
