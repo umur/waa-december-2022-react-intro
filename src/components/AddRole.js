@@ -22,10 +22,6 @@ const AddRole = () => {
         navigate("/roles/");
     }
 
-
-
-
-
     return (
         <div>
             <form ref={addRoleformRef} onSubmit={addRoleHandeler}>
