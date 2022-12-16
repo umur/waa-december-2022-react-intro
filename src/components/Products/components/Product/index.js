@@ -1,27 +1,21 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Button } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
+import { getProduct } from '../../../../services/productService';
 import './product.css';
 
 function Product() {
     
-    const initialState = {
-        name: '',
-        price: 0,
-        rating: 0,
-        category: {},
-        reviews: []
-    }
-
-    const [productState, setProductState] = useState(initialState);
+    const product = useSelector(state => state.productReducer.product);
 
     const params = useParams();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const fetchProduct = async function () {
-        const products = await axios.get('/products/' + params.idProduct);
-        setProductState(products.data);
+        dispatch(getProduct({url : `/products/${params.id}`}))
     }
 
     useEffect(() => {
@@ -39,7 +33,7 @@ function Product() {
         price,
         rating,
         category
-    } = productState;
+    } = product;
     return (
         <div className='product'>
             <div>

@@ -1,84 +1,96 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setErrorMessage, setSuccessMessage } from '../../redux/appReducer';
+import { resetMessage } from '../../redux/userReducer';
+import { signUp } from '../../services/userService';
 import './register.css';
 
 function Register() {
 
-    const initialState = {
-        name: '',
-        userName: '',
-        password: '',
-        confirmPassword: ''
-    };
-
-    const [registerState, setRegisterState] = useState(initialState);
+    const { errorMessage, successMessage } = useSelector(state => state.userReducer);
     const dispatch = useDispatch();
+
+    const formRef = useRef();
 
     useEffect(() => {
         //componentWillUnmount();
-        return ()=> {
+        return () => {
             dispatch(setErrorMessage(''));
             dispatch(setSuccessMessage(''));
+            dispatch(resetMessage());
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const changeName = (e) => setRegisterState({...registerState, name: e.target.value});
-    const changeUserName = (e) => setRegisterState({...registerState, userName: e.target.value});
-    const changePassword = (e) => setRegisterState({...registerState, password: e.target.value});
-    const changeConfirmPassword = (e) => setRegisterState({...registerState, confirmPassword: e.target.value});
+    useEffect(()=> {
+        dispatch(setSuccessMessage(successMessage));
+        dispatch(setErrorMessage(errorMessage));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [successMessage, errorMessage])
 
     const register = async function (event) {
         event.preventDefault();
 
-        const response = await axios.post('/uaa/signup', {
-            id: 4010,
-            email: userName,
-            password: password,
-            firstName: name.split(' ')[0],
-            lastName: name.split(' ')[1]
-        });
+        let lastName = "";
+        let firstName = formRef.current.fullName.value;
+        let email = formRef.current.name.email;
+        let password = formRef.current.password.value;
 
-        if(response.status < 300)
-            dispatch(setSuccessMessage('User registered successfully'));
-        else
-            dispatch(setErrorMessage('Error registering user'));
+        if(firstName === "" || email === "" || password === ""){
+            return;
+        }
+
+        if(firstName.includes(' ')){
+            lastName = firstName.split(' ')[1];
+            firstName = firstName.split(' ')[0];
+        } 
+        
+        if(formRef.current.password.value !== formRef.current.confirmPassword.value){
+            dispatch(setErrorMessage("Password doesn't match!"));
+            return;
+        }
+
+        const payload = {
+            url: '/uaa/signup',
+            data: {
+                id: 4010,
+                email,
+                password,
+                firstName,
+                lastName,
+            }
+        }
+        dispatch(signUp(payload));
     }
 
-    const reset = function(event){
+    const reset = function (event) {
         event.preventDefault();
-        setRegisterState(initialState);
+        formRef.current.fullName.value = "";
+        formRef.current.email.value = "";
+        formRef.current.password.value = "";
+        formRef.current.confirmPassword.value = "";
     }
-
-    const {
-        name,
-        userName,
-        password,
-        confirmPassword
-    } = registerState;
 
     return (
         <div className='register'>
-            
-            <Form onSubmit={register} onReset={reset}>
+
+            <Form onSubmit={register} onReset={reset} ref={formRef}>
                 <Form.Group>
                     <Form.Label>Full name</Form.Label>
-                    <Form.Control className='form-control' value={name} placeholder="full name" onChange={changeName}/>
+                    <Form.Control className='form-control' name="fullName" placeholder="full name"/>
                 </Form.Group>
                 <Form.Group>
-                    <Form.Label>User name</Form.Label>
-                    <Form.Control className='form-control' value={userName} placeholder="username" onChange={changeUserName}/>
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control className='form-control' name="email" placeholder="email"/>
                 </Form.Group>
                 <Form.Group>
                     <Form.Label>Password</Form.Label>
-                    <Form.Control className='form-control' value={password} type="password" placeholder="password" onChange={changePassword}/>
+                    <Form.Control className='form-control' name="password" type="password" placeholder="password"/>
                 </Form.Group>
                 <Form.Group>
                     <Form.Label>Confirm password</Form.Label>
-                    <Form.Control className='form-control' value={confirmPassword} type="password" placeholder="confirm password" onChange={changeConfirmPassword}/>
+                    <Form.Control className='form-control' name="confirmPassword" type="password" placeholder="confirm password"/>
                 </Form.Group>
                 <Form.Group>
                     <Button variant='success' type='submit'>Register</Button>

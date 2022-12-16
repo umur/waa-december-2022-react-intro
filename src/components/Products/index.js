@@ -1,17 +1,15 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import ProductForm from './components/Product-Form';
-import  './products.css';
+import './products.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { setFormVisible } from '../../redux/productReducer';
-import { handleError, handleSuccess } from '../../utilities';
+import { resetMessage, setFormVisible } from '../../redux/productReducer';
 import { Space, Table } from 'antd';
 import editIcon from '../../images/edit.png';
 import deleteIcon from '../../images/delete.png';
 import { setErrorMessage, setSuccessMessage } from '../../redux/appReducer';
-import { getProducts } from '../../services/productService';
+import { deleteProduct, getProducts } from '../../services/productService';
 
 function Products() {
 
@@ -21,11 +19,11 @@ function Products() {
 
     const [currentProduct, setCurrentProduct] = useState(0);
 
-    const products = useSelector(state => state.productReducer.products);
+    const { products, successMessage, errorMessage } = useSelector(state => state.productReducer);
 
     useEffect(() => {
         let url = '/products';
-        if(params.id){
+        if (params.id) {
             url += '/filter-by-category?id=' + params.id;
         }
         dispatch(getProducts(url));
@@ -34,12 +32,19 @@ function Products() {
 
     useEffect(() => {
         //componentWillUnmount();
-        return ()=> {
+        return () => {
             dispatch(setErrorMessage(''));
             dispatch(setSuccessMessage(''));
+            dispatch(resetMessage());
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(()=> {
+        dispatch(setSuccessMessage(successMessage));
+        dispatch(setErrorMessage(errorMessage));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [successMessage, errorMessage])
 
     const addClick = () => {
         setCurrentProduct(0);
@@ -54,11 +59,7 @@ function Products() {
 
     const deleteClick = function (id) {
         if (window.confirm('Are you sure you want to delete?')) {
-            axios.delete('/products/' + id)
-                .then((result) => {
-                    handleSuccess('Product deleted successfully!', dispatch);
-                })
-                .catch(error => handleError(error, dispatch));
+            dispatch(deleteProduct({ url: '/products/' + id }))
         }
     }
 
@@ -103,8 +104,8 @@ function Products() {
             <label className='h2'>Products</label>
             <Button variant='success' onClick={addClick}>Add</Button>
 
-            {isFormVisible ? 
-                <ProductForm id={currentProduct}/> : (
+            {isFormVisible ?
+                <ProductForm id={currentProduct} /> : (
                     <Table dataSource={products} columns={columns} rowKey="id" />
                 )
             }

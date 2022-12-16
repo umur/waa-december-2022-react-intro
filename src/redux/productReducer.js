@@ -1,33 +1,84 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getProduct, getProducts } from "../services/productService";
+import { deleteProduct, getProduct, getProducts, saveProduct, updateProduct } from "../services/productService";
+
+const initialState = {
+    products: [], 
+    isFormVisible: false, 
+    product: {} ,
+    errorMessage: "",
+    successMessage: ""
+}
 
 const productSlice = createSlice({
     name: 'product',
-    initialState: { products: [], isFormVisible: false, product: {} },
+    initialState,
     reducers: {
         setFormVisible: (state, action) => {
             state.isFormVisible = action.payload;
+        },
+        resetMessage: (state, action) => {
+            state.successMessage = "";
+            state.errorMessage = "";
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(getProducts.fulfilled, (state, action) => {
+        builder
+            .addCase(getProducts.fulfilled, (state, action) => {
                 state.products = action.payload;
             })
-            .addCase(getProducts.rejected, (state, action) => {
-
-            })
-            
-        builder.addCase(getProduct.fulfilled, (state, action) => {
+            .addCase(getProduct.fulfilled, (state, action) => {
                 state.product = action.payload;
             })
-            .addCase(getProduct.rejected, (state, action) => {
+            .addCase(saveProduct.fulfilled, (state, action) => {
+                state.isFormVisible = false;
+                state.successMessage = "Product saved successfully!";
+            })
+            .addCase(updateProduct.fulfilled, (state, action) => {
+                state.isFormVisible = false;
+                state.successMessage = "Product updated successfully!";
+            })
+            .addCase(deleteProduct.fulfilled, (state, action) => {
+                state.reloadData = true;
+                state.successMessage = "Product deleted successfully!";
+            });
 
-            });  
+            
+        builder
+            .addCase(getProducts.rejected, (state, action) => {
+                if (action.error.message.includes('401') || action.error.message.includes('403'))
+                    state.errorMessage = 'Unauthorized! Please login to update.';
+                else
+                    state.errorMessage = 'Internal server error!';
+            })
+            .addCase(getProduct.rejected, (state, action) => {
+                if (action.error.message.includes('401') || action.error.message.includes('403'))
+                    state.errorMessage = 'Unauthorized! Please login to update.';
+                else
+                    state.errorMessage = 'Internal server error!';
+            })
+            .addCase(saveProduct.rejected, (state, action) => {
+                if (action.error.message.includes('401') || action.error.message.includes('403'))
+                    state.errorMessage = 'Unauthorized! Please login to update.';
+                else
+                    state.errorMessage = 'Internal server error!';
+            })
+            .addCase(updateProduct.rejected, (state, action) => {
+                if (action.error.message.includes('401') || action.error.message.includes('403'))
+                    state.errorMessage = 'Unauthorized! Please login to update.';
+                else
+                    state.errorMessage = 'Internal server error!';
+            })
+            .addCase(deleteProduct.rejected, (state, action) => {
+                if (action.error.message.includes('401') || action.error.message.includes('403'))
+                    state.errorMessage = 'Unauthorized! Please login to update.';
+                else
+                    state.errorMessage = 'Internal server error!';
+            });
     }
 });
 
 const productReducer = productSlice.reducer;
 
-export const { setFormVisible } = productSlice.actions;
+export const { setFormVisible, resetMessage } = productSlice.actions;
 
 export default productReducer;

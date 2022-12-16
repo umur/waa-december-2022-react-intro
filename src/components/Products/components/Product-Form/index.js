@@ -1,12 +1,10 @@
-import axios from 'axios';
 import React, { useEffect, useRef } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { setFormVisible } from '../../../../redux/productReducer';
 import { getCategories } from '../../../../services/categoryService';
-import { getProduct } from '../../../../services/productService';
-import { handleError, handleSuccess } from '../../../../utilities';
+import { getProduct, saveProduct, updateProduct } from '../../../../services/productService';
 import './product-form.css';
 
 function ProductForm(props) {
@@ -43,7 +41,7 @@ function ProductForm(props) {
         }
     }, [product, categories, props.id])
 
-    const saveProduct = function (event) {
+    const save = function(event) {
         event.preventDefault();
 
         const data = {
@@ -58,20 +56,19 @@ function ProductForm(props) {
 
         //if update
         if (props.id) {
-            axios.put('/products/' + props.id, data)
-                .then((result) => {
-                    handleSuccess('Product updated successfully!', dispatch);
-                    dispatch(setFormVisible(false));
-                })
-                .catch(error => handleError(error, dispatch));
+            const payload = {
+                url: '/products/' + props.id,
+                data
+            }
+
+            dispatch(updateProduct(payload));
 
         } else {
-            axios.post('/products', data)
-                .then((result) => {
-                    handleSuccess('Product added successfully!', dispatch);
-                    dispatch(setFormVisible(false));
-                })
-                .catch(error => handleError(error, dispatch));
+            const payload = {
+                url: '/products',
+                data
+            }
+            dispatch(saveProduct(payload));
         }
     }
 
@@ -82,7 +79,7 @@ function ProductForm(props) {
 
     return (
         <div>
-            <Form onSubmit={saveProduct} onReset={reset} ref={formRef}>
+            <Form onSubmit={save} onReset={reset} ref={formRef}>
                 <Form.Group>
                     <Form.Label>Category</Form.Label>
                     <Form.Select name="category">

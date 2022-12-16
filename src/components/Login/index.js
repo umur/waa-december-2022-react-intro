@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import './login.css';
 
@@ -7,8 +6,9 @@ import Button from 'react-bootstrap/Button';
 import logo from '../../images/user.png';
 import jwt from 'jwt-decode'
 import { useDispatch, useSelector } from 'react-redux';
-import { setLogIn } from '../../redux/userReducer';
+import { setToken } from '../../redux/userReducer';
 import { useNavigate } from 'react-router';
+import { signIn } from '../../services/userService';
 
 function Login() {
 
@@ -16,7 +16,7 @@ function Login() {
     const [userName, setUserName] = useState(initialState);
 
     const loginRef = useRef();
-    let isLoggedIn = useSelector((state) => state.userReducer.isLoggedIn);
+    const { isLoggedIn, token } = useSelector((state) => state.userReducer);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -24,7 +24,7 @@ function Login() {
         const token = localStorage.getItem('token');
         if (token) {
             setUser(token);
-            dispatch(setLogIn(true));
+            dispatch(setToken(token));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -37,22 +37,30 @@ function Login() {
     const onSubmit = async function (event) {
         event.preventDefault();
 
-        const response = await axios.post('/uaa/signin', {
-            email: loginRef.current.username.value,
-            password: loginRef.current.password.value,
-        });
-
-        if (response.status < 300) {
-            localStorage.setItem('token', response.data.accessToken);
-            setUser(response.data.accessToken);
-            dispatch(setLogIn(true));
-            navigate('/');
+        const payload = {
+            url: '/uaa/signin',
+            data: {
+                email: loginRef.current.username.value,
+                password: loginRef.current.password.value
+            }
         }
+
+        dispatch(signIn(payload));
     }
 
+    useEffect(() => {
+        if(token){
+            setUser(token);
+            localStorage.setItem('token', token);
+        } else 
+            localStorage.removeItem('token');
+
+        navigate('/');
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [token])
+
     const logout = function () {
-        localStorage.removeItem('token');
-        dispatch(setLogIn(false));
+        dispatch(setToken(""));
         setUserName(initialState);
     }
 

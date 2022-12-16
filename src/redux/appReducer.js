@@ -9,9 +9,13 @@ const appSlice = createSlice({
         },
         setErrorMessage: (state, action) => {
             state.errorMessage = action.payload;
+            if (state.errorMessage > "")
+                state.successMessage = "";
         },
         setSuccessMessage: (state, action) => {
             state.successMessage = action.payload;
+            if (state.successMessage > "")
+                state.errorMessage = "";
         }
     }
 });

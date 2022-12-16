@@ -1,9 +1,7 @@
-import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { setReload } from '../../../redux/categoryReducer';
-import { handleError, handleSuccess } from '../../../utilities';
+import { saveCategory, updateCategory } from '../../../services/categoryService';
 
 function AddCategory(props){
 
@@ -17,7 +15,6 @@ function AddCategory(props){
         event.preventDefault();
 
         const catName = categoryRef.current.name.value;
-
         if(catName){
 
             //get new id
@@ -29,19 +26,9 @@ function AddCategory(props){
 
             //update
             if(props.data.id){
-                axios.put('/categories/' + props.data.id, obj)
-                    .then((result) => {
-                        handleSuccess('Category updated successfully!', dispatch);
-                        dispatch(setReload(true));
-                    })
-                    .catch(error => handleError(error, dispatch));
+                dispatch(updateCategory({url:'/categories/' + props.data.id, data: obj}));
             } else {
-                axios.post('/categories', obj)
-                .then((result) => {
-                    handleSuccess('Category added successfully!', dispatch);
-                    dispatch(setReload(true));
-                })
-                .catch(error => handleError(error, dispatch));
+                dispatch(saveCategory({url:'/categories/', data: obj}));
             }
         }  
     }

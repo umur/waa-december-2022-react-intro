@@ -1,24 +1,22 @@
 import { Space, Table } from 'antd';
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { handleError, handleSuccess } from '../../utilities';
 import './categories.css';
 import AddCategory from './components/add-form';
 import collapse from '../../images/collapse.png';
 import expand from '../../images/expand.png';
 import edit from '../../images/edit.png';
 import deleteIcon from '../../images/delete.png';
-import { setReload } from '../../redux/categoryReducer';
+import { resetMessage } from '../../redux/categoryReducer';
 import { Link } from 'react-router-dom';
-import { getCategories } from '../../services/categoryService';
+import { deleteCategory, getCategories } from '../../services/categoryService';
 import { setErrorMessage, setSuccessMessage } from '../../redux/appReducer';
 
 function Categories() {
     const [addFormVisible, setAddFormVisible] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState({});
 
-    const { categories, reloadData } = useSelector(state => state.categoryReducer);
+    const { categories, reloadData, errorMessage, successMessage } = useSelector(state => state.categoryReducer);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -27,7 +25,6 @@ function Categories() {
             setSelectedCategory({});
             setAddFormVisible(false);
         }
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [reloadData]);
 
@@ -36,9 +33,17 @@ function Categories() {
         return ()=> {
             dispatch(setErrorMessage(''));
             dispatch(setSuccessMessage(''));
+            dispatch(resetMessage());
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(()=> {
+        console.log('MSG',successMessage, errorMessage);
+        dispatch(setSuccessMessage(successMessage));
+        dispatch(setErrorMessage(errorMessage));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [successMessage, errorMessage])
 
     const toggleForm = function () {
         setAddFormVisible(!addFormVisible);
@@ -52,12 +57,7 @@ function Categories() {
 
     const deleteClick = function (id) {
         if (window.confirm('Are you sure you want to delete?')) {
-            axios.delete('/categories/' + id)
-                .then((result) => {
-                    handleSuccess('Category deleted successfully!', dispatch);
-                    dispatch(setReload(true));
-                })
-                .catch(error => handleError(error, dispatch));
+            dispatch(deleteCategory({url: '/categories/' + id}));
         }
 
     }
