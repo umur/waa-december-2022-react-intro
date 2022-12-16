@@ -2,6 +2,7 @@ package edu.miu.springsecurity.service.impl;
 
 import edu.miu.springsecurity.dto.ReviewDto;
 import edu.miu.springsecurity.entity.Review;
+import edu.miu.springsecurity.repository.ProductRepo;
 import edu.miu.springsecurity.repository.ReviewRepo;
 import edu.miu.springsecurity.service.ReviewService;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +15,10 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('ADMIN')")
+//@PreAuthorize("hasRole('ADMIN')")
 public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepo reviewRepo;
+    private final ProductRepo productRepo;
     private final ModelMapper modelMapper;
     @Override
     public Iterable<ReviewDto> getAll() {
@@ -44,5 +46,14 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public void delete(int id) {
         reviewRepo.deleteById(id);
+    }
+
+    @Override
+    public Iterable<ReviewDto> findAllByProduct(int productId) {
+        var product = productRepo.findById(productId).get();
+        List<ReviewDto> list = new ArrayList<>();
+        var reviews = reviewRepo.findAllByProduct(product);
+        reviews.forEach(p -> list.add(modelMapper.map(p, ReviewDto.class)));
+        return list;
     }
 }

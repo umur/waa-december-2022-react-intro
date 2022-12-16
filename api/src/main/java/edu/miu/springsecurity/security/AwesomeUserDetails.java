@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.miu.springsecurity.entity.Role;
 import edu.miu.springsecurity.entity.User;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,7 +16,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-@Data
+@Getter
+@Setter
 public class AwesomeUserDetails implements UserDetails {
 
     private int id;

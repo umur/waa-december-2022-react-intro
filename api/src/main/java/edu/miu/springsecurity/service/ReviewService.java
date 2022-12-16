@@ -8,5 +8,6 @@ public interface ReviewService {
     void save(ReviewDto review);
     void update(int id, ReviewDto review);
     void delete(int id);
+    Iterable<ReviewDto> findAllByProduct(int productId);
 }
 

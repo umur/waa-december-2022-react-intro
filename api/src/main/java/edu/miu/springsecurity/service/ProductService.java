@@ -12,6 +12,7 @@ public interface ProductService {
 
     Iterable<ReviewDto> getReviewsById(int id);
 
+    Iterable<ProductDto> findAllByCategory(int id);
     Iterable<ProductDto> findAllByPriceGreaterThan(double minPrice);
 
     Iterable<ProductDto> findAllByCategoryAndPriceLessThan(String cat, double maxPrice);

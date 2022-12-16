@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ProductRepo extends CrudRepository<Product, Integer> {
     //Find all products that cost more than minPrice
+    Iterable<Product> findAllByCategory(Category category);
     Iterable<Product> findAllByPriceGreaterThan(double minPrice);
 
     //Find all products in cat category and cost less than maxPrice

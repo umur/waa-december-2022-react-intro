@@ -44,6 +44,11 @@ public class ProductController {
         return productService.getReviewsById(id);
     }
 
+    @GetMapping("/filter-by-category")
+    public Iterable<ProductDto> filterByCategory(@RequestParam int id){
+        return productService.findAllByCategory(id);
+    }
+
     @GetMapping("/filter-by-min-price")
     public Iterable<ProductDto> filterByMinPrice(@RequestParam double minPrice){
         return productService.findAllByPriceGreaterThan(minPrice);

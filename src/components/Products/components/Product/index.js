@@ -26,6 +26,7 @@ function Product() {
 
     useEffect(() => {
         fetchProduct();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onDelete = async function(){
@@ -37,8 +38,7 @@ function Product() {
         name,
         price,
         rating,
-        category,
-        reviews
+        category
     } = productState;
     return (
         <div className='product'>

@@ -1,5 +1,6 @@
 package edu.miu.springsecurity.controller;
 
+import edu.miu.springsecurity.dto.ProductDto;
 import edu.miu.springsecurity.dto.ReviewDto;
 import edu.miu.springsecurity.service.ReviewService;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/reviews")
 @RestController
+@CrossOrigin
 public class ReviewController {
 
     public final ReviewService reviewService;
@@ -35,5 +37,10 @@ public class ReviewController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable int id){
         reviewService.delete(id);
+    }
+
+    @GetMapping("/filter-by-product")
+    public Iterable<ReviewDto> filterByCategory(@RequestParam int id){
+        return reviewService.findAllByProduct(id);
     }
 }

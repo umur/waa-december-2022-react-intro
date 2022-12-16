@@ -17,11 +17,11 @@ public class Product {
 
     //A Category can have many Products
     //A Product can belong to only one Category.
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Category category;
 
     //A Product can have many Reviews
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<Review> reviews;
 
     @OneToOne

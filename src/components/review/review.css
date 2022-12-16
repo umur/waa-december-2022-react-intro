@@ -1,0 +1,18 @@
+.review {
+    margin: 10px;
+}
+
+.comment {
+    font-style: italic;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.review > .h2 {
+    display: block;
+    margin-bottom: 0px;
+}
+
+.review > .h5 {
+    display: block;
+    margin-top: 20px;
+}

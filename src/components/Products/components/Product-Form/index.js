@@ -1,110 +1,91 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { Alert, Button, Form } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useRef } from 'react';
+import { Button, Form } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 import { setFormVisible } from '../../../../redux/productReducer';
+import { getCategories } from '../../../../services/categoryService';
+import { getProduct } from '../../../../services/productService';
+import { handleError, handleSuccess } from '../../../../utilities';
 import './product-form.css';
 
 function ProductForm(props) {
 
-    const initialState = {
-        successMessage: '',
-        errorMessage: '',
-        category: '',
-        name: '',
-        price: '',
-        rating: ''
-    };
-
     const dispatch = useDispatch();
+    const params = useParams();
+    const formRef = useRef();
 
-    const [productFormState, setProductFormState] = useState(initialState);
-    const [categories, setCategories] = useState([]);
-
-    const fetchCategories = async function () {
-        const categories = await axios.get('/categories');
-        setCategories(categories.data);
-    }
-    const fetchProduct = async function () {
-        const product = await axios.get('/products/'+props.id);
-        setProductFormState({...product.data, category: product.data.category.id});
-    }
+    const categories = useSelector(state => state.categoryReducer.categories);
+    const product = useSelector(state => state.productReducer.product);
 
     useEffect(() => {
-        fetchCategories();
-        if(props.id)
-            fetchProduct();
+        dispatch(getCategories());
+
+        if (props.id) {
+            dispatch(getProduct("/products/" + props.id));
+        }
+
+        if (params.id) {
+            const elem = formRef.current.category;
+            elem.value = params.id;
+            elem.setAttribute('disabled', true);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const changeCategory = (e) => setProductFormState({ ...productFormState, category: e.target.value });
-    const changeName = (e) => setProductFormState({ ...productFormState, name: e.target.value });
-    const changePrice = (e) => setProductFormState({ ...productFormState, price: e.target.value });
-    const changeRating = (e) => setProductFormState({ ...productFormState, rating: e.target.value });
+    useEffect(() => {
+        if (props.id) {
+            const { category, name, price, rating } = product;
+            formRef.current.category.value = category && category.id;
+            formRef.current.name.value = name;
+            formRef.current.price.value = price;
+            formRef.current.rating.value = rating;
+        }
+    }, [product, categories, props.id])
 
-    const saveProduct = async function (event) {
+    const saveProduct = function (event) {
         event.preventDefault();
 
         const data = {
             id: props.id || 4010,
-            name: productFormState.name,
-            price: productFormState.price,
-            rating: productFormState.rating,
+            name: formRef.current.name.value,
+            price: formRef.current.price.value,
+            rating: formRef.current.rating.value,
             category: {
-                id: productFormState.category
+                id: formRef.current.category.value
             }
         };
 
         //if update
-        if(props.id) {
-            const response = await axios.put('/products/' + props.id, data);
+        if (props.id) {
+            axios.put('/products/' + props.id, data)
+                .then((result) => {
+                    handleSuccess('Product updated successfully!', dispatch);
+                    dispatch(setFormVisible(false));
+                })
+                .catch(error => handleError(error, dispatch));
 
-            if(response.status < 300){
-                dispatch(setFormVisible(false));
-            } else {
-                
-            }
         } else {
-            const response = await axios.post('/products', data);
-
-            if(response.status < 300){
-                dispatch(setFormVisible(false));
-            } else {
-
-            }
+            axios.post('/products', data)
+                .then((result) => {
+                    handleSuccess('Product added successfully!', dispatch);
+                    dispatch(setFormVisible(false));
+                })
+                .catch(error => handleError(error, dispatch));
         }
     }
 
     const reset = function (event) {
         event.preventDefault();
-        setProductFormState(initialState);
+        dispatch(setFormVisible(false));
     }
-
-    const {
-        successMessage,
-        errorMessage,
-        category,
-        name,
-        price,
-        rating
-    } = productFormState;
 
     return (
         <div>
-            {successMessage && (
-                <Alert key='success' variant='success'>
-                    <p>{successMessage}</p>
-                </Alert>
-            )}
-            {errorMessage && (
-                <Alert key='danger' variant='danger'>
-                    <p>{errorMessage}</p>
-                </Alert>
-            )}
-
-            <Form onSubmit={saveProduct} onReset={reset}>
+            <Form onSubmit={saveProduct} onReset={reset} ref={formRef}>
                 <Form.Group>
                     <Form.Label>Category</Form.Label>
-                    <Form.Select value={category} onChange={changeCategory}>
+                    <Form.Select name="category">
                         <option>select category</option>
                         {categories.map((category) => {
                             return (
@@ -115,15 +96,15 @@ function ProductForm(props) {
                 </Form.Group>
                 <Form.Group>
                     <Form.Label>Name</Form.Label>
-                    <Form.Control className='form-control' value={name} placeholder="product name" onChange={changeName} />
+                    <Form.Control className='form-control' placeholder="product name" name="name" />
                 </Form.Group>
                 <Form.Group>
                     <Form.Label>Price</Form.Label>
-                    <Form.Control className='form-control' value={price} placeholder="price" onChange={changePrice} />
+                    <Form.Control className='form-control' name="price" placeholder="price" />
                 </Form.Group>
                 <Form.Group>
                     <Form.Label>Rating</Form.Label>
-                    <Form.Control className='form-control' value={rating} placeholder="rating" onChange={changeRating} />
+                    <Form.Control className='form-control' name="rating" placeholder="rating" />
                 </Form.Group>
                 <Form.Group className='mt-2'>
                     <Button variant='success' type='submit'>Save</Button>

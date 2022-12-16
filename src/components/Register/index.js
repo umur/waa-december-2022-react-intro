@@ -1,13 +1,13 @@
 import axios from 'axios';
-import React, { useState } from 'react';
-import { Alert, Button, Form } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Button, Form } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
+import { setErrorMessage, setSuccessMessage } from '../../redux/appReducer';
 import './register.css';
 
 function Register() {
 
     const initialState = {
-        successMessage: '',
-        errorMessage: '',
         name: '',
         userName: '',
         password: '',
@@ -15,6 +15,16 @@ function Register() {
     };
 
     const [registerState, setRegisterState] = useState(initialState);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        //componentWillUnmount();
+        return ()=> {
+            dispatch(setErrorMessage(''));
+            dispatch(setSuccessMessage(''));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const changeName = (e) => setRegisterState({...registerState, name: e.target.value});
     const changeUserName = (e) => setRegisterState({...registerState, userName: e.target.value});
@@ -32,10 +42,10 @@ function Register() {
             lastName: name.split(' ')[1]
         });
 
-        if(response.status < 300) {
-            setRegisterState({...initialState, successMessage: 'User registered successfully'});
-        } else
-            setRegisterState({...registerState, successMessage: 'User registered successfully'});
+        if(response.status < 300)
+            dispatch(setSuccessMessage('User registered successfully'));
+        else
+            dispatch(setErrorMessage('Error registering user'));
     }
 
     const reset = function(event){
@@ -44,8 +54,6 @@ function Register() {
     }
 
     const {
-        successMessage,
-        errorMessage,
         name,
         userName,
         password,
@@ -54,17 +62,7 @@ function Register() {
 
     return (
         <div className='register'>
-            {successMessage && (
-            <Alert key='success' variant='success'>
-                <p>{successMessage}</p>
-            </Alert>
-            )}
-            {errorMessage && (
-            <Alert key='danger' variant='danger'>
-                <p>{errorMessage}</p>
-            </Alert>
-            )}
-
+            
             <Form onSubmit={register} onReset={reset}>
                 <Form.Group>
                     <Form.Label>Full name</Form.Label>

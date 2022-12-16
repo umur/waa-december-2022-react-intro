@@ -8,7 +8,7 @@ import java.util.Date;
 @Component
 public class JwtHelper {
     private final String secret = "your-256-bit-secret";
-    private final long expiration = 15 * 60 * 1000; //min * sec * ms
+    private final long expiration =60 * 60 * 1000; //min * sec * ms
 
     public String generateToken(String email){
         return Jwts.builder()

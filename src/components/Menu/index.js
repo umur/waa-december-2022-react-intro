@@ -4,7 +4,7 @@ import './menu.css';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import Login from '../Login';
+import Login from '../login';
 
 function Menu() {
     return (
@@ -19,7 +19,8 @@ function Menu() {
                         style={{ maxHeight: '100px' }}
                         navbarScroll
                     >
-                        <Link className='nav-link' to="/">Categories</Link>
+                        <Link className='nav-link' to="/">Dashboard</Link>
+                        <Link className='nav-link' to="/categories">Categories</Link>
                         <Link className='nav-link' to="products">Products</Link>
                         <Link className='nav-link' to="register">Register</Link>
                     </Nav>

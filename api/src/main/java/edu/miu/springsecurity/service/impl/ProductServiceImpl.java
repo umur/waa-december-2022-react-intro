@@ -68,6 +68,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Iterable<ProductDto> findAllByCategory(int categoryId) {
+        var category = categoryRepo.findById(categoryId).get();
+        return convertIteratorToList(productRepo.findAllByCategory(category));
+    }
+
+    @Override
     @ExecutionTime
     public Iterable<ProductDto> findAllByPriceGreaterThan(double minPrice) {
         return convertIteratorToList(productRepo.findAllByPriceGreaterThan(minPrice));

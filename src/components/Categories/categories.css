@@ -1,0 +1,22 @@
+.categories {
+    display: block;
+    width: 1000px;
+    padding: 30px;
+}
+
+.add-name {
+    display: inline;
+    width: 50%;
+    margin: 10px 10px 10px 0px;
+
+}
+
+.categories img {
+    margin-left: 15px;
+    cursor: pointer;
+}
+
+.link-product {
+    text-decoration: none;
+    color:forestgreen;
+}

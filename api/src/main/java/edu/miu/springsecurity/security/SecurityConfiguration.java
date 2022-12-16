@@ -3,6 +3,7 @@ package edu.miu.springsecurity.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -46,6 +47,7 @@ public class SecurityConfiguration {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/uaa/*").permitAll()
+                .antMatchers(HttpMethod.GET, "/**").permitAll()
                 //.antMatchers("/uaa/login").permitAll()
                 .anyRequest()
                 .authenticated()
