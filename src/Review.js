@@ -13,11 +13,17 @@ const Review = () => {
         fetchReview();
     }, [])
     return (
-        reviewState.map(x=>{
-            return(
-                <div>{x.comment}</div>
-            );
-        }) 
+        <div>
+
+           { 
+           reviewState.map(x=>{
+                return(
+                    <div>{x.comment}</div>
+                );
+            })
+             }
+           
+        </div>
      
      );
 }

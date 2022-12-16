@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router";
 const UserDetails = () => {
-   console.log("hi");
+  // console.log("hi");
 
    const initialUser = {
     id: 0,

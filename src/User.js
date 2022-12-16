@@ -2,10 +2,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { useParams } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { saveusers } from "./redux/userReducer";
 const User = () => {
   // const [st, setSt] = useState("Hafteab");
-  let initialName = ["Haftab"];
-  const [userName, setName] = useState(initialName);
+ // let initialName = [];
+  //const [userName, setName] = useState(initialName);
+  const dispatch = useDispatch();
+  const userName =useSelector((state)=>state.userReducer.users);
   const navigate = useNavigate();
   const changeNameHandler = () => {
     //
@@ -16,8 +20,9 @@ const User = () => {
   };
   const fetchUser = async () => {
     const users = await axios.get("http://localhost:8081/users");
-    console.log(users.data[0].firstName);
-    setName(users.data);
+    //console.log(users.data[0].firstName);
+    //setName(users.data);
+    dispatch(saveusers(users.data));
   };
   useEffect(() => {
     fetchUser();
@@ -70,6 +75,7 @@ const User = () => {
                   >
                     UserDetail
                   </button>
+                  
                   <button
                     type="button"
                     className="btn btn-warning"
