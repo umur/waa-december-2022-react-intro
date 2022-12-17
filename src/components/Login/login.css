@@ -1,0 +1,20 @@
+.login {
+    float: right;
+}
+
+.login-form {
+    display: flex;
+    column-gap: 7px;
+}
+
+.greeting {
+    display: flex;
+    column-gap: 10px;
+    align-items: center;
+}
+
+.greeting > span {
+    font-size: 14px;
+    font-style: italic;
+    color: #ddd;
+}

@@ -1,0 +1,7 @@
+.mt-2 > button {
+    width: 80px;
+}
+
+.mt-2 > button[type='reset'] {
+    margin-left: 5px;
+}

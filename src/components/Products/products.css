@@ -1,0 +1,27 @@
+.products {
+    margin: 10px;
+}
+
+.products>ul>li {
+    list-style: circle;
+}
+
+.products>ul>li>a {
+    text-decoration: none;
+    cursor: pointer;
+    color: black;
+}
+
+.products>ul>li>a:hover {
+    color: #777;
+}
+
+.products > button {
+    width: 80px;
+    margin-left: 10px;
+}
+
+.products img {
+    margin-left: 10px;
+    cursor: pointer;
+}
