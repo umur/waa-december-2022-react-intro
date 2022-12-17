@@ -14,7 +14,7 @@ function ProductForm(props) {
     const formRef = useRef();
 
     const categories = useSelector(state => state.categoryReducer.categories);
-    const product = useSelector(state => state.productReducer.product);
+    const { product, products } = useSelector(state => state.productReducer);
 
     useEffect(() => {
         dispatch(getCategories());
@@ -44,8 +44,11 @@ function ProductForm(props) {
     const save = function(event) {
         event.preventDefault();
 
+        //get new id
+        let id = products.map(o => o.id).reduce((x, y) => x > y ? x : y);
+
         const data = {
-            id: props.id || 4010,
+            id: props.id || id + 1,
             name: formRef.current.name.value,
             price: formRef.current.price.value,
             rating: formRef.current.rating.value,

@@ -4,11 +4,12 @@ import Register from './components/register';
 import Menu from './components/menu';
 import Products from './components/products';
 import Product from './components/products/components/Product';
-import Categories from './components/Categories';
+import Categories from './components/categories';
 import { useSelector } from 'react-redux';
 import { Alert } from 'react-bootstrap';
 import Dashboard from './components/dashboard';
 import Review from './components/review';
+import Error from './components/error';
 
 function App() {
 
@@ -38,6 +39,7 @@ function App() {
         <Route path='/register' element={<Register />} />
         <Route path='/products/:idProduct' element={<Product />} />
         <Route path='/products/:id/reviews' element={<Review />} />
+        <Route path='*' element={<Error />} />
       </Routes>
 
     </div>
